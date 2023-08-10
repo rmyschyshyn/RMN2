@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Расчет</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        /* Добавленный стиль для выравнивания слов и инпутов */
+        tr td label {
+            display: inline-block;
+            width: 100px;
+            margin-right: 60px;
+            vertical-align: middle;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Расчет значений</h1>
+    
+    <table>
+        <tr>
+            <th>Цiна</th>
+            <th>Кiлькiсть</th>
+            <th>Результат</th>
+        </tr>
+        <tr>
+            <td><label for="valueA">Лайкi</label> <input type="number" id="valueA" /></td>
+            <td><input type="number" id="quantityA" /></td>
+            <td><span id="resultA"></span></td>
+        </tr>
+        <tr>
+            <td><label for="valueB">Компiк</label> <input type="number" id="valueB" /></td>
+            <td><input type="number" id="quantityB" /></td>
+            <td><span id="resultB"></span></td>
+        </tr>
+        <tr>
+            <td><label for="valueC">Ротмас Роялс </label> <input type="number" id="valueC" /></td>
+            <td><input type="number" id="quantityC" /></td>
+            <td><span id="resultC"></span></td>
+        </tr>
+        <tr>
+            <td><label for="valueD">Хзыыыыыы
+                вфывфывыф
+            </label> <input type="number" id="valueD" /></td>
+            <td><input type="number" id="quantityD" /></td>
+            <td><span id="resultD"></span></td>
+        </tr>
+        <tr>
+            <td><label for="valueF">Прикол</label> <input type="number" id="valueF" /></td>
+            <td><input type="number" id="quantityF" /></td>
+            <td><span id="resultF"></span></td>
+        </tr>
+        <tr>
+            <td><label for="valueG">ы</label> <input type="number" id="valueG" /></td>
+            <td><input type="number" id="quantityG" /></td>
+            <td><span id="resultG"></span></td>
+        </tr>
+        <tr>
+            <td><label for="valueJ">выф</label> <input type="number" id="valueJ" /></td>
+            <td><input type="number" id="quantityJ" /></td>
+            <td><span id="resultJ"></span></td>
+        </tr>
+        <tr>
+            <td><label for="valueK"> </label> <input type="number" id="valueK" /></td>
+            <td><input type="number" id="quantityK" /></td>
+            <td><span id="resultK"></span></td>
+        </tr>
+        <tr id="totalRow" style="display: none;">
+            <td colspan="2">Загальна сума:</td>
+            <td><span id="finalResult">0</span></td>
+        </tr>
+    </table>
+
+    <button onclick="calculate()">Порахувати</button><br>
+
+    <script>
+        function calculate() {
+            var totalResult = 0;
+
+            totalResult += calculateAndDisplay("A", "quantityA", "valueA", "resultA");
+            totalResult += calculateAndDisplay("B", "quantityB", "valueB", "resultB");
+            totalResult += calculateAndDisplay("C", "quantityC", "valueC", "resultC");
+            totalResult += calculateAndDisplay("D", "quantityD", "valueD", "resultD");
+            totalResult += calculateAndDisplay("F", "quantityF", "valueF", "resultF");
+            totalResult += calculateAndDisplay("G", "quantityG", "valueG", "resultG");
+            totalResult += calculateAndDisplay("J", "quantityJ", "valueJ", "resultJ");
+            totalResult += calculateAndDisplay("K", "quantityK", "valueK", "resultK");
+
+            document.getElementById("finalResult").textContent = totalResult;
+
+            hideUnusedFields();
+        }
+
+        function calculateAndDisplay(valueName, quantityId, valueId, resultId) {
+            var value = parseFloat(document.getElementById(valueId).value);
+            var quantity = parseFloat(document.getElementById(quantityId).value);
+
+            if (!isNaN(value) && !isNaN(quantity) && value !== 0) {
+                var result = value * quantity;
+                document.getElementById(resultId).textContent = result;
+                return result;
+            } else {
+                document.getElementById(resultId).textContent = "";
+                return 0;
+            }
+        }
+
+        function hideUnusedFields() {
+            var fields = ["A", "B", "C", "D", "F", "G", "J", "K"];
+
+            var anyFieldsFilled = false;
+
+            for (var i = 0; i < fields.length; i++) {
+                var valueId = "value" + fields[i];
+                var quantityId = "quantity" + fields[i];
+                var resultId = "result" + fields[i];
+
+                var value = parseFloat(document.getElementById(valueId).value);
+                var quantity = parseFloat(document.getElementById(quantityId).value);
+
+                if (!isNaN(value) || !isNaN(quantity) && value !== 0) {
+                    anyFieldsFilled = true;
+                }
+
+                if (!isNaN(value) && !isNaN(quantity) && value !== 0) {
+                    document.getElementById(valueId).parentNode.parentNode.style.display = "table-row";
+                } else {
+                    document.getElementById(valueId).parentNode.parentNode.style.display = "none";
+                }
+            }
+
+            var totalRow = document.getElementById("totalRow");
+            if (anyFieldsFilled) {
+                totalRow.style.display = "table-row";
+            } else {
+                totalRow.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
